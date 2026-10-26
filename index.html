@@ -17,7 +17,6 @@
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
       crossorigin=""
     />
     <link rel="stylesheet" href="styles.css" />
@@ -145,21 +144,21 @@
           <div class="section-header">
             <div>
               <p class="eyebrow">Map View</p>
-              <h3 id="map-title">Explore Lagos on an interactive OpenStreetMap layer.</h3>
+              <h3 id="map-title">Explore Lagos on an interactive geographic layer.</h3>
             </div>
           </div>
 
           <div class="map-panel">
-            <div id="map-canvas" class="map-canvas" aria-label="Lagos city map"></div>
+            <div class="map-surface" id="map-surface" aria-label="Map of Lagos"></div>
             <div class="map-info">
               <p class="status-label">Integration status</p>
-              <strong id="map-status">Map integration: loading OpenStreetMap…</strong>
+              <strong id="map-status">Map integration: live OpenStreetMap layer</strong>
               <p>
-                This map uses OpenStreetMap and Leaflet, so it works without a Google Maps API key or paid service.
-                <span class="map-attribution">© OpenStreetMap contributors</span>
+                A connected 2D context for the virtual world. Selecting a location updates the
+                matching scene element in the 3D view.
               </p>
               <div class="inline-actions">
-                <button class="primary-btn small" type="button" id="demo-map-button">Load map</button>
+                <button class="primary-btn small" type="button" id="demo-map-button">Load demo map</button>
                 <button class="secondary-btn small" type="button" id="map-warning-button">Show note</button>
               </div>
             </div>
@@ -175,19 +174,41 @@
           </div>
 
           <div class="world-shell">
-            <div class="world-card">
-              <div class="world-badge">Virtual Lagos</div>
-              <h4>Night District</h4>
-              <p>
-                A front-end prototype for a future social city with digital land, events,
-                community spaces, and immersive public experiences.
-              </p>
-              <p class="mini-note">3D world: future development • no live engine configured</p>
-              <button class="primary-btn" type="button" id="enter-world-button">Enter world</button>
+            <div class="world-viewport-wrap">
+              <canvas id="world-canvas" aria-label="3D virtual world"></canvas>
+              <div class="world-overlay">
+                <div class="world-status-pill" id="world-status-pill">Aerial view</div>
+                <div class="world-controls">
+                  <button class="world-mode-btn active" type="button" data-world-mode="aerial">Aerial</button>
+                  <button class="world-mode-btn" type="button" data-world-mode="ground">Ground</button>
+                </div>
+              </div>
+              <div class="world-loading" id="world-loading">Loading 3D environment...</div>
+              <div class="world-error" id="world-error" hidden>
+                3D scene unavailable. The map still works, but the scene could not initialise.
+              </div>
             </div>
-            <div class="loading-box" id="world-loading" aria-live="polite" hidden>
-              <div class="spinner" aria-hidden="true"></div>
-              <span>Loading your world session...</span>
+
+            <div class="world-panel">
+              <div class="world-card">
+                <div class="world-badge">Virtual Lagos</div>
+                <h4 id="world-location-name">Victoria Island</h4>
+                <p id="world-location-description">
+                  City-edge innovation district with commerce, nightlife and a strong creative pulse.
+                </p>
+                <p class="mini-note">3D geographic prototype • Lagos, Nigeria</p>
+                <button class="primary-btn" type="button" id="enter-world-button">Enter world</button>
+              </div>
+
+              <div class="world-help-box">
+                <p class="status-label">Controls</p>
+                <ul>
+                  <li>Drag to orbit the camera</li>
+                  <li>Scroll to zoom in and out</li>
+                  <li>Use W/A/S/D on ground mode</li>
+                  <li>Choose a map point to sync the world</li>
+                </ul>
+              </div>
             </div>
           </div>
         </section>
@@ -316,11 +337,8 @@
       </main>
     </div>
 
-    <script
-      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-      crossorigin=""
-    ></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
