@@ -5,9 +5,18 @@
     synced: "Location synced",
   };
 
+  let worldInitialized = false;
+
   function getLocationByKey(key) {
     const locations = Array.isArray(window.worldLocations) ? window.worldLocations : [];
     return locations.find((location) => location.key === key) || locations[0] || null;
+  }
+
+  function isWorldContainerReady() {
+    const host = document.getElementById("world-canvas");
+    if (!host) return false;
+    const rect = host.getBoundingClientRect();
+    return host.clientHeight > 0 && rect.height > 0 && host.offsetParent !== null;
   }
 
   function showWorldLoading(show) {
@@ -96,14 +105,40 @@
     }
   }
 
-  function initialize() {
+  function initialize(force = false) {
     const host = document.getElementById("world-canvas");
-    if (!host || typeof Cesium === "undefined") {
-      showWorldError("3D environment unavailable in this browser. The map is still usable.");
-      return;
+
+    if (typeof Cesium === "undefined") {
+      showWorldError("Cesium failed to load. The 3D scene cannot initialise without the library.");
+      return null;
+    }
+
+    if (!host) {
+      showWorldError("The 3D container is missing. The world view cannot initialise.");
+      return null;
+    }
+
+    if (!force && worldInitialized && window.viewer) {
+      return window.viewer;
+    }
+
+    if (!force && !isWorldContainerReady()) {
+      showWorldError("The 3D world is hidden or has zero height. Open the world view and try again.");
+      return null;
+    }
+
+    if (force && window.viewer && typeof window.viewer.destroy === "function") {
+      try {
+        window.viewer.destroy();
+      } catch (error) {
+        console.warn("Could not destroy previous Cesium viewer:", error);
+      }
+      window.viewer = null;
     }
 
     showWorldLoading(true);
+    const errorEl = document.getElementById("world-error");
+    if (errorEl) errorEl.hidden = true;
 
     try {
       const viewer = new Cesium.Viewer(host, {
@@ -120,13 +155,15 @@
         imageryProvider: new Cesium.OpenStreetMapImageryProvider({
           url: "https://a.tile.openstreetmap.org/",
         }),
-        terrainProvider: Cesium.createWorldTerrain(),
+        terrainProvider: new Cesium.EllipsoidTerrainProvider(),
       });
 
       viewer.scene.globe.enableLighting = true;
       viewer.scene.globe.depthTestAgainstTerrain = true;
       viewer.scene.backgroundColor = Cesium.Color.fromCssColorString("#07130f");
-      viewer.cesiumWidget.creditContainer.style.display = "none";
+      if (viewer.cesiumWidget && viewer.cesiumWidget.creditContainer) {
+        viewer.cesiumWidget.creditContainer.style.display = "none";
+      }
 
       const initialLocation = getLocationByKey("victoria-island");
       if (initialLocation) {
@@ -142,31 +179,33 @@
 
       createRoadNetwork(viewer);
 
-      window.worldLocations.forEach((location) => {
-        viewer.entities.add({
-          id: location.key,
-          name: location.name,
-          position: Cesium.Cartesian3.fromDegrees(location.lng, location.lat, 120),
-          point: {
-            pixelSize: 14,
-            color: Cesium.Color.fromCssColorString("#6fdcff"),
-            outlineColor: Cesium.Color.BLACK,
-            outlineWidth: 2,
-          },
-          label: {
-            text: location.name,
-            font: "14px sans-serif",
-            fillColor: Cesium.Color.WHITE,
-            outlineColor: Cesium.Color.BLACK,
-            outlineWidth: 1,
-            pixelOffset: new Cesium.Cartesian2(12, -15),
-          },
-          properties: {
-            key: location.key,
-            type: "geo-location",
-          },
+      if (Array.isArray(window.worldLocations)) {
+        window.worldLocations.forEach((location) => {
+          viewer.entities.add({
+            id: location.key,
+            name: location.name,
+            position: Cesium.Cartesian3.fromDegrees(location.lng, location.lat, 120),
+            point: {
+              pixelSize: 14,
+              color: Cesium.Color.fromCssColorString("#6fdcff"),
+              outlineColor: Cesium.Color.BLACK,
+              outlineWidth: 2,
+            },
+            label: {
+              text: location.name,
+              font: "14px sans-serif",
+              fillColor: Cesium.Color.WHITE,
+              outlineColor: Cesium.Color.BLACK,
+              outlineWidth: 1,
+              pixelOffset: new Cesium.Cartesian2(12, -15),
+            },
+            properties: {
+              key: location.key,
+              type: "geo-location",
+            },
+          });
         });
-      });
+      }
 
       addCustomVirtualBuildings(viewer);
 
@@ -187,11 +226,12 @@
       }, Cesium.ScreenSpaceEventHandler.MouseEventType.LEFT_CLICK);
 
       window.viewer = viewer;
+      worldInitialized = true;
       window.ayeewaVirtualWorld = {
         initialize,
         setWorldMode(mode) {
           const location = getLocationByKey(window.worldLocationKey || "victoria-island");
-          if (!location) return;
+          if (!location || !viewer) return;
 
           const target = Cesium.Cartesian3.fromDegrees(
             location.lng,
@@ -213,7 +253,7 @@
         },
         focusLocation(key, options = {}) {
           const location = getLocationByKey(key);
-          if (!location) return;
+          if (!location || !viewer) return;
 
           const selectedKey = location.key;
           const targetAlt = window.worldMode === "ground" ? 260 : 18000;
@@ -246,30 +286,38 @@
       if (window.ayeewaMapSelection) {
         window.ayeewaMapSelection(selectedKey, { syncWorld: false });
       }
+
+      return viewer;
     } catch (error) {
       console.error("Could not initialise Cesium world:", error);
       showWorldError("3D environment failed to initialise. The map remains available.");
+      return null;
     }
   }
 
   window.ayeewaVirtualWorld = {
     initialize,
     setWorldMode(mode) {
-      const state = window.ayeewaVirtualWorld || {};
-      if (typeof state.setWorldModeInternal === "function") {
-        state.setWorldModeInternal(mode);
+      if (window.viewer) {
+        const api = window.ayeewaVirtualWorld;
+        if (api && typeof api.setWorldModeInternal === "function") {
+          api.setWorldModeInternal(mode);
+        }
       }
     },
     focusLocation(key, options = {}) {
-      if (window.ayeewaVirtualWorld && typeof window.ayeewaVirtualWorld.focusLocationInternal === "function") {
-        window.ayeewaVirtualWorld.focusLocationInternal(key, options);
+      if (window.viewer) {
+        const api = window.ayeewaVirtualWorld;
+        if (api && typeof api.focusLocationInternal === "function") {
+          api.focusLocationInternal(key, options);
+        }
       }
     },
   };
 
   if (document.readyState === "complete") {
-    initialize();
+    requestAnimationFrame(() => initialize(false));
   } else {
-    window.addEventListener("load", initialize, { once: true });
+    window.addEventListener("load", () => requestAnimationFrame(() => initialize(false)), { once: true });
   }
 })();
