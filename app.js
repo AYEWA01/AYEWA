@@ -7,6 +7,22 @@ const menu = document.querySelector(".mobile-nav");
 let map = null;
 let loadingWorldTimer = null;
 
+function syncNavState() {
+  if (!menu || !toggleButton) return;
+
+  const isMobile = window.innerWidth <= 768;
+
+  toggleButton.style.display = isMobile ? "block" : "none";
+
+  if (!isMobile) {
+    menu.classList.remove("open");
+    menu.style.display = "flex";
+    return;
+  }
+
+  menu.style.display = menu.classList.contains("open") ? "flex" : "none";
+}
+
 function showView(targetId) {
   views.forEach((view) => {
     view.classList.toggle("active", view.id === targetId);
@@ -16,8 +32,9 @@ function showView(targetId) {
     button.classList.toggle("active", button.dataset.target === targetId);
   });
 
-  if (window.innerWidth <= 480) {
+  if (window.innerWidth <= 768) {
     menu?.classList.remove("open");
+    syncNavState();
   }
 
   if (targetId === "map") {
@@ -44,19 +61,13 @@ document.querySelectorAll("[data-open]").forEach((button) => {
 });
 
 toggleButton?.addEventListener("click", () => {
+  if (window.innerWidth > 768) return;
   menu?.classList.toggle("open");
-  if (menu?.classList.contains("open")) {
-    menu.style.display = "flex";
-  } else {
-    menu.style.display = "none";
-  }
+  syncNavState();
 });
 
-if (window.innerWidth > 480) {
-  menu.style.display = "flex";
-} else {
-  menu.style.display = "none";
-}
+window.addEventListener("resize", syncNavState);
+syncNavState();
 
 function initializeMap() {
   const mapElement = document.getElementById("map-canvas");
