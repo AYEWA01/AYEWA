@@ -1,40 +1,56 @@
-const year = document.getElementById('year');
-if (year) {
-  year.textContent = new Date().getFullYear();
-}
+# AYEWA.AI Prototype
 
-const waitlistForm = document.getElementById('waitlist-form');
-const formStatus = document.getElementById('form-status');
+A mobile-first prototype for AYEWA.AI, designed as an African virtual universe starting in Lagos, Nigeria.
 
-if (waitlistForm && formStatus) {
-  waitlistForm.addEventListener('submit', (event) => {
-    event.preventDefault();
+## What’s included
 
-    const emailInput = document.getElementById('email-input');
-    const email = emailInput ? emailInput.value.trim() : '';
+- Home screen
+- Explore Lagos
+- Map view with a Google Maps-ready placeholder
+- Enter Virtual World section
+- AI Guide mock interface
+- My Avatar profile
+- African Cities section
+- Responsive mobile navigation
 
-    if (!email) {
-      formStatus.textContent = 'Please enter a valid email address.';
-      formStatus.style.color = '#f7d58d';
-      return;
-    }
+## Run locally
 
-    formStatus.textContent = `You are on the list, ${email}. We will reach out soon.`;
-    formStatus.style.color = '#70efb8';
-    waitlistForm.reset();
-  });
-}
+Option 1: open the HTML file directly in a browser
+- Double-click `index.html`
 
-const anchors = document.querySelectorAll('a[href^="#"]');
-anchors.forEach((anchor) => {
-  anchor.addEventListener('click', (event) => {
-    const targetId = anchor.getAttribute('href');
-    if (!targetId || targetId === '#') return;
+Option 2: use a tiny local server
+- In the project folder, run:
+  `python -m http.server 8000`
+- Then open:
+  `http://localhost:8000`
 
-    const target = document.querySelector(targetId);
-    if (!target) return;
+## Files
 
-    event.preventDefault();
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-});
+- `index.html`
+- `styles.css`
+- `app.js`
+
+## Notes
+
+- No API keys or secrets are included.
+- Google Maps, AI services, authentication, and multiplayer features are intentionally left as placeholders.
+- The prototype uses realistic mock data and safe demo states only.
+
+## What works
+
+- Navigation between sections
+- Buttons and interactions
+- Loading state for the virtual world
+- Empty/error-safe mock AI responses
+- Responsive design for Android-sized screens
+
+## What still requires external services
+
+- Google Maps Platform integration
+- Real AI backend
+- Authentication
+- Multiplayer networking
+- 3D world engine
+- Persistent data storage
+
+This is a small, reliable prototype designed for future extension without rebuilding the UI.

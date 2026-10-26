@@ -1,225 +1,320 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0a120e">
-  <meta name="description" content="AYÉRA — a connected digital world for Africa, powered by AYEWA.AI.">
-  <title>AYÉRA — Your Digital World</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <div class="prototype-banner" role="note">Prototype preview • curated concept experience</div>
-
-  <div class="intro" id="intro" aria-label="AYÉRA introduction">
-    <div class="intro-grain"></div>
-    <div class="intro-content">
-      <div class="intro-symbol">A<span>✦</span></div>
-      <p class="eyebrow">A NEW WORLD IS OPENING</p>
-      <h1>Welcome to<br><em>AYÉRA.</em></h1>
-      <p class="intro-line">Africa connected. Possibility without borders.</p>
-      <button class="button button-lime" id="enterButton" type="button">Enter your world <span aria-hidden="true">↗</span></button>
-      <button class="skip-intro" id="skipIntro" type="button">Skip introduction</button>
-    </div>
-    <div class="intro-orbit orbit-a"></div>
-    <div class="intro-orbit orbit-b"></div>
-    <div class="intro-foot"><span>DISCOVER · CONNECT · CREATE</span><span>01 / YOUR WORLD</span></div>
-  </div>
-
-  <div class="app" id="app">
-    <aside class="sidebar" aria-label="Primary navigation">
-      <a class="brand" href="#home" aria-label="AYÉRA home">
-        <span class="brand-icon">A</span>
-        <span>AYÉRA<small>YOUR DIGITAL WORLD</small></span>
-      </a>
-      <div class="side-label">YOUR SPACE</div>
-      <button class="side-link active" data-view="home" type="button"><span>⌂</span> Home</button>
-      <button class="side-link" data-view="discover" type="button"><span>⌕</span> Discover <i>NEW</i></button>
-      <button class="side-link" data-view="connect" type="button"><span>◎</span> Connect</button>
-      <button class="side-link" data-view="market" type="button"><span>◇</span> Marketplace</button>
-      <button class="side-link" data-view="create" type="button"><span>✳</span> Create</button>
-      <button class="side-link" data-view="opportunities" type="button"><span>↗</span> Opportunities</button>
-      <button class="side-link side-link-guide" data-view="guide" type="button"><span>✦</span> AI Guide</button>
-      <div class="side-label side-label-lower">LOOKING AHEAD</div>
-      <button class="side-link" data-view="world" type="button"><span>◉</span> Immersive world <small>SOON</small></button>
-      <div class="sidebar-bottom">
-        <div class="mini-profile">
-          <div class="profile-avatar">Y</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="AYEWA.AI prototype for an African virtual universe and digital city experience."
+    />
+    <title>AYEWA.AI | AYEWA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand-wrap">
+          <div class="brand-mark">A</div>
           <div>
-            <strong>Your AYÉRA</strong>
-            <small>Powered by AYEWA.AI</small>
+            <p class="eyebrow">AYEWA.AI</p>
+            <h1>AYEWA</h1>
           </div>
-          <span>···</span>
         </div>
-        <p>Built for possibility.<br><span>Rooted in Africa.</span></p>
-      </div>
-    </aside>
-
-    <main class="main-content">
-      <header class="mobile-header">
-        <a class="brand" href="#home" aria-label="AYÉRA home">
-          <span class="brand-icon">A</span>
-          <span>AYÉRA<small>YOUR DIGITAL WORLD</small></span>
-        </a>
-        <button class="mobile-menu" id="mobileMenu" aria-label="Toggle navigation" type="button">☰</button>
+        <button class="nav-toggle" type="button" aria-label="Open navigation">☰</button>
       </header>
 
-      <section class="view active" data-screen="home" aria-label="Home dashboard">
-        <div class="hero-panel">
-          <div class="hero-copy">
-            <p class="eyebrow signal">AFRICA, CONNECTED</p>
-            <h2>Discover your world.<br><em>Your AYÉRA.</em></h2>
-            <p class="lead">A digital home for African discovery, culture, creativity, and opportunity. Powered by AYEWA.AI.</p>
-            <div class="hero-actions">
-              <button class="button button-lime" type="button" data-action="jump-discover">Explore the world <span aria-hidden="true">↗</span></button>
-              <button class="button button-dark" type="button" data-action="jump-guide">Ask the AI guide</button>
+      <nav class="mobile-nav" aria-label="Main navigation">
+        <button type="button" class="nav-item active" data-target="home">Home</button>
+        <button type="button" class="nav-item" data-target="explore">Explore</button>
+        <button type="button" class="nav-item" data-target="map">Map</button>
+        <button type="button" class="nav-item" data-target="world">World</button>
+        <button type="button" class="nav-item" data-target="guide">AI Guide</button>
+        <button type="button" class="nav-item" data-target="avatar">Avatar</button>
+        <button type="button" class="nav-item" data-target="cities">Cities</button>
+      </nav>
+
+      <main class="main-content">
+        <section id="home" class="view active" aria-labelledby="home-title">
+          <div class="hero-card">
+            <div class="hero-copy">
+              <span class="pill">AYEWA • African virtual life</span>
+              <h2 id="home-title">A digital future built for Africa.</h2>
+              <p>
+                AYEWA.AI creates a social, immersive digital universe anchored in Lagos,
+                Nigeria and designed to grow across African cities.
+              </p>
+              <div class="hero-actions">
+                <button class="primary-btn" type="button" data-open="explore">Explore Lagos</button>
+                <button class="secondary-btn" type="button" data-open="world">Enter Virtual World</button>
+              </div>
+            </div>
+            <div class="hero-visual" aria-hidden="true">
+              <div class="orbit orbit-one"></div>
+              <div class="orbit orbit-two"></div>
+              <div class="glow-card">
+                <span>Virtual Lagos</span>
+                <strong>2026</strong>
+              </div>
             </div>
           </div>
-          <div class="hero-art" aria-hidden="true">
-            <div class="orbit orbit-one"></div>
-            <div class="orbit orbit-two"></div>
-            <div class="globe"><span>AFRICA</span><i>✳</i></div>
-            <span class="float-tag tag-one">Culture ✦</span>
-            <span class="float-tag tag-two">People ◉</span>
-            <span class="float-tag tag-three">Possibility ↗</span>
+
+          <div class="stats-grid">
+            <article class="stat-card">
+              <strong>7</strong>
+              <span>key zones</span>
+            </article>
+            <article class="stat-card">
+              <strong>24/7</strong>
+              <span>AI guide</span>
+            </article>
+            <article class="stat-card">
+              <strong>3D</strong>
+              <span>future-ready</span>
+            </article>
           </div>
-        </div>
+        </section>
 
-        <div class="quick-links" aria-label="Explore categories">
-          <button class="quick-link active" data-category="All" type="button"><span>✦</span> For you</button>
-          <button class="quick-link" data-category="Places" type="button"><span>⌖</span> Places</button>
-          <button class="quick-link" data-category="Culture" type="button"><span>◈</span> Culture</button>
-          <button class="quick-link" data-category="Creators" type="button"><span>✳</span> Creators</button>
-          <button class="quick-link" data-category="Opportunities" type="button"><span>↗</span> Opportunities</button>
-        </div>
-      </section>
-
-      <section class="view" data-screen="discover" aria-label="Discover places and creators">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">Discover</p>
-            <h3>Explore Africa through culture, people, and opportunity.</h3>
-          </div>
-        </div>
-
-        <label class="search-box" for="discoverSearch">
-          <span aria-hidden="true">⌕</span>
-          <input id="discoverSearch" type="search" placeholder="Search places, creators or culture">
-        </label>
-
-        <div class="filter-row" aria-label="Discover filters">
-          <button class="filter-chip active" data-filter="All" type="button">All</button>
-          <button class="filter-chip" data-filter="Places" type="button">Places</button>
-          <button class="filter-chip" data-filter="Culture" type="button">Culture</button>
-          <button class="filter-chip" data-filter="Creators" type="button">Creators</button>
-          <button class="filter-chip" data-filter="Opportunities" type="button">Opportunities</button>
-        </div>
-
-        <div id="discoverResults" class="discover-grid" aria-live="polite"></div>
-        <div id="discoverEmpty" class="empty-state" hidden>No matching discovery cards yet. Try another keyword or filter.</div>
-      </section>
-
-      <section class="view" data-screen="connect" aria-label="Connect section">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">Connect</p>
-            <h3>Build communities across cities, culture and creativity.</h3>
-          </div>
-        </div>
-        <div class="mini-panel">
-          <p>Community circles, local event drops, and collaborations can be added here without changing the underlying interface.</p>
-        </div>
-      </section>
-
-      <section class="view" data-screen="market" aria-label="Marketplace section">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">Marketplace</p>
-            <h3>Discover local goods, digital art, and culture-first commerce.</h3>
-          </div>
-        </div>
-        <div class="mini-panel">
-          <p>Marketplace cards are designed for a future commerce layer, while the prototype remains mock-data only.</p>
-        </div>
-      </section>
-
-      <section class="view" data-screen="create" aria-label="Create section">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">Create</p>
-            <h3>Turn African stories into digital experiences.</h3>
-          </div>
-        </div>
-        <div class="mini-panel">
-          <p>Creators can publish moods, collections, and community projects here when the content systems are connected.</p>
-        </div>
-      </section>
-
-      <section class="view" data-screen="opportunities" aria-label="Opportunities section">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">Opportunities</p>
-            <h3>Explore pathways for innovation, work, and community growth.</h3>
-          </div>
-        </div>
-        <div class="mini-panel">
-          <p>These cards are concept placeholders for future jobs, local partnerships, and startup discovery flows.</p>
-        </div>
-      </section>
-
-      <section class="view" data-screen="guide" aria-label="AI Guide">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">AI Guide</p>
-            <h3>Demonstration assistant</h3>
-          </div>
-        </div>
-
-        <div class="guide-panel" aria-live="polite">
-          <div class="guide-header">
-            <div class="guide-avatar">A</div>
+        <section id="explore" class="view" aria-labelledby="explore-title">
+          <div class="section-header">
             <div>
-              <strong>AYEWA.AI Guide</strong>
-              <small>Demo responses only</small>
+              <p class="eyebrow">Explore Lagos</p>
+              <h3 id="explore-title">Discover the city that powers the universe.</h3>
             </div>
           </div>
 
-          <div id="guideMessages" class="guide-messages">
-            <div class="message assistant">
-              <span>AI Guide</span>
-              <p>Welcome to AYÉRA. I am a demonstration guide powered by AYEWA.AI and can help you explore Lagos, African culture, creators, and opportunity.</p>
+          <div class="card-grid">
+            <article class="feature-card" data-category="culture">
+              <span class="feature-badge">Culture & heritage</span>
+              <h4>Victoria Island</h4>
+              <p>Creative hubs, civic spaces, nightlife, and waterfront lifestyles.</p>
+            </article>
+            <article class="feature-card" data-category="places">
+              <span class="feature-badge">Places & exploration</span>
+              <h4>Ikoyi</h4>
+              <p>Commercial districts, social clubs, and immersive branded experiences.</p>
+            </article>
+            <article class="feature-card" data-category="creators">
+              <span class="feature-badge">Creators & creativity</span>
+              <h4>Yaba</h4>
+              <p>Startup energy, digital learning, creator communities, and local culture.</p>
+            </article>
+            <article class="feature-card" data-category="communities">
+              <span class="feature-badge">Communities</span>
+              <h4>Lekki</h4>
+              <p>Beachfront scenes, entertainment districts, and future city landmarks.</p>
+            </article>
+            <article class="feature-card" data-category="opportunities">
+              <span class="feature-badge">Opportunities</span>
+              <h4>Surulere</h4>
+              <p>Market pathways, local innovation corridors, and community-led projects.</p>
+            </article>
+            <article class="feature-card" data-category="culture">
+              <span class="feature-badge">Culture & heritage</span>
+              <h4>Marina</h4>
+              <p>Waterfront storytelling, arts, urban memory, and social gathering spaces.</p>
+            </article>
+          </div>
+
+          <div class="panel-box">
+            <div>
+              <p class="eyebrow">Prototype demo</p>
+              <h4>Featured experiences</h4>
+            </div>
+            <ul class="experience-list">
+              <li>Night market in Victoria Island</li>
+              <li>AI cultural guide in Lekki</li>
+              <li>Virtual meetup at Marina District</li>
+              <li>Creator showcase in Yaba</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="map" class="view" aria-labelledby="map-title">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Map View</p>
+              <h3 id="map-title">Explore Lagos on a prepared location layer.</h3>
             </div>
           </div>
 
-          <div class="suggestion-row" aria-label="Suggested AI guide prompts">
-            <button class="suggestion-btn" data-question="What should I explore in Lagos first?" type="button">Lagos</button>
-            <button class="suggestion-btn" data-question="What African cultural experiences stand out in this city?" type="button">Culture</button>
-            <button class="suggestion-btn" data-question="Which creators or communities should I discover?" type="button">Creators</button>
-            <button class="suggestion-btn" data-question="What opportunities are emerging in African digital communities?" type="button">Opportunities</button>
+          <div class="map-panel">
+            <div class="map-surface" aria-label="Mock geographic map preview">
+              <div class="map-marker marker-one">A</div>
+              <div class="map-marker marker-two">B</div>
+              <div class="map-marker marker-three">C</div>
+              <div class="map-route"></div>
+            </div>
+            <div class="map-info">
+              <p class="status-label">Integration status</p>
+              <strong id="map-status">Map integration: not connected</strong>
+              <p>
+                This is a static prototype layer. Google Maps, location services, and
+                geospatial APIs are not yet active.
+              </p>
+              <div class="inline-actions">
+                <button class="primary-btn small" type="button" id="demo-map-button">Load demo map</button>
+                <button class="secondary-btn small" type="button" id="map-warning-button">Show note</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="world" class="view" aria-labelledby="world-title">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Enter Virtual World</p>
+              <h3 id="world-title">Step into the AYEWA universe.</h3>
+            </div>
           </div>
 
-          <div class="guide-input-row">
-            <input id="guideInput" type="text" placeholder="Ask about a place, creator, city, or opportunity" aria-label="Ask the AI guide">
-            <button id="guideSubmit" class="button button-lime" type="button">Ask</button>
+          <div class="world-shell">
+            <div class="world-card">
+              <div class="world-badge">Virtual Lagos</div>
+              <h4>Night District</h4>
+              <p>
+                A front-end prototype for a future social city with digital land, events,
+                community spaces, and immersive public experiences.
+              </p>
+              <p class="mini-note">3D world: future development</p>
+              <button class="primary-btn" type="button" id="enter-world-button">Enter world</button>
+            </div>
+            <div class="loading-box" id="world-loading" aria-live="polite" hidden>
+              <div class="spinner" aria-hidden="true"></div>
+              <span>Loading your world session...</span>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="view" data-screen="world" aria-label="Immersive world section">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">Immersive World</p>
-            <h3>Prototype layer for a future African virtual universe.</h3>
+        <section id="guide" class="view" aria-labelledby="guide-title">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">AI Guide</p>
+              <h3 id="guide-title">Ask the AYEWA.AI Guide.</h3>
+            </div>
           </div>
-        </div>
-        <div class="mini-panel">
-          <p>No live multiplayer, 3D engine, or service credentials are connected in this build. This is a front-end prototype only.</p>
-        </div>
-      </section>
-    </main>
-  </div>
 
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="app.js"></script>
-</body>
+          <div class="chat-card">
+            <div class="guide-status" id="guide-notice">
+              Demonstration mode: this guide is not connected to a live AI service.
+            </div>
+            <div class="guide-quick-prompts" aria-label="Suggested questions">
+              <button class="quick-prompt" type="button" data-guide-prompt="What should I explore in Lagos this weekend?">Explore Lagos</button>
+              <button class="quick-prompt" type="button" data-guide-prompt="Where are the best creative communities in Nigeria?">Creative communities</button>
+              <button class="quick-prompt" type="button" data-guide-prompt="How can a creator build an audience in Africa?">Creator tips</button>
+              <button class="quick-prompt" type="button" data-guide-prompt="What city features matter for a future virtual world?">Future world</button>
+            </div>
+
+            <div class="chat-feed" id="chat-feed" aria-live="polite">
+              <div class="message assistant">
+                <span class="message-label">AI Guide</span>
+                <p>Welcome to AYEWA. Ask me about Lagos, culture, creators, places, or opportunities.</p>
+              </div>
+            </div>
+
+            <div class="chat-input-row">
+              <input
+                id="ai-input"
+                type="text"
+                placeholder="Ask about Lagos neighborhoods, culture, or travel..."
+                aria-label="Ask the AI guide"
+              />
+              <button class="primary-btn small" type="button" id="ask-ai-button">Send</button>
+            </div>
+          </div>
+        </section>
+
+        <section id="avatar" class="view" aria-labelledby="avatar-title">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">My Avatar</p>
+              <h3 id="avatar-title">Set your local avatar identity.</h3>
+            </div>
+          </div>
+
+          <div class="avatar-layout">
+            <div class="avatar-card">
+              <div class="avatar-figure" aria-label="Avatar preview">
+                <div class="avatar-head"></div>
+                <div class="avatar-body"></div>
+              </div>
+              <div class="avatar-meta">
+                <span class="tag">Traveler</span>
+                <strong id="avatar-name">Ada</strong>
+              </div>
+            </div>
+
+            <div class="avatar-controls">
+              <label>
+                Display name
+                <input id="avatar-name-input" type="text" value="Ada" maxlength="18" />
+              </label>
+              <label>
+                Style
+                <select id="avatar-style">
+                  <option value="traveler">Traveler</option>
+                  <option value="creator">Creator</option>
+                  <option value="explorer">Explorer</option>
+                  <option value="builder">Builder</option>
+                </select>
+              </label>
+              <button class="primary-btn" type="button" id="generate-avatar-button">Save local profile</button>
+              <p class="profile-note" id="avatar-note">
+                Local prototype profile only — no account or registration is created.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="cities" class="view" aria-labelledby="cities-title">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">African Cities</p>
+              <h3 id="cities-title">A growing network of connected urban worlds.</h3>
+            </div>
+          </div>
+
+          <div class="city-grid">
+            <article class="city-card">
+              <span class="city-flag">🇳🇬</span>
+              <h4>Lagos</h4>
+              <p>Digital commerce, music, culture, and urban mobility.</p>
+            </article>
+            <article class="city-card">
+              <span class="city-flag">🇳🇬</span>
+              <h4>Abuja</h4>
+              <p>Government, innovation, and next-generation public services.</p>
+            </article>
+            <article class="city-card">
+              <span class="city-flag">🇬🇭</span>
+              <h4>Accra</h4>
+              <p>Creative communities, tourism, and vibrant cultural experiences.</p>
+            </article>
+            <article class="city-card">
+              <span class="city-flag">🇰🇪</span>
+              <h4>Nairobi</h4>
+              <p>Tech ecosystems, community building, and urban innovation.</p>
+            </article>
+            <article class="city-card">
+              <span class="city-flag">🇨🇦</span>
+              <h4>Cape Town</h4>
+              <p>Coastal culture, creative industries, and digital travel.</p>
+            </article>
+            <article class="city-card">
+              <span class="city-flag">🇪🇹</span>
+              <h4>Addis Ababa</h4>
+              <p>Regional connectivity, culture, and future mobility design.</p>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
 </html>
