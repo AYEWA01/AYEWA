@@ -19,6 +19,10 @@
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
       crossorigin=""
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/cesium@1.122.0/Build/Cesium/Widgets/widgets.css"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -154,7 +158,8 @@
               <p class="status-label">Integration status</p>
               <strong id="map-status">Map integration: live OpenStreetMap layer</strong>
               <p>
-                A connected 2D context for the virtual world. Selecting a location updates the matching scene element in the 3D view.
+                A connected 2D context for the virtual world. Selecting a location updates the
+                matching scene element in the 3D view.
               </p>
               <div class="inline-actions">
                 <button class="primary-btn small" type="button" id="demo-map-button">Load demo map</button>
@@ -174,7 +179,7 @@
 
           <div class="world-shell">
             <div class="world-viewport-wrap">
-              <canvas id="world-canvas" aria-label="3D virtual world"></canvas>
+              <div id="world-canvas" aria-label="3D virtual world"></div>
               <div class="world-overlay">
                 <div class="world-status-pill" id="world-status-pill">Aerial view</div>
                 <div class="world-controls">
@@ -336,9 +341,12 @@
       </main>
     </div>
 
+    <script>
+      window.CESIUM_BASE_URL = "https://cdn.jsdelivr.net/npm/cesium@1.122.0/Build/Cesium/";
+    </script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-    <script src="virtual-world.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cesium@1.122.0/Build/Cesium/Cesium.js"></script>
     <script src="app.js"></script>
+    <script src="virtual-world.js"></script>
   </body>
 </html>

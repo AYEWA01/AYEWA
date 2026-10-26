@@ -519,6 +519,14 @@ img {
   background: linear-gradient(180deg, rgba(13, 27, 23, 0.96), rgba(5, 12, 12, 0.9));
 }
 
+#world-canvas .cesium-viewer,
+#world-canvas .cesium-viewer canvas {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 420px;
+  display: block;
+}
+
 .world-overlay {
   position: absolute;
   inset: 12px 12px auto 12px;
