@@ -66,6 +66,28 @@ function getLocationByKey(key) {
   return locations.find((location) => location.key === key) || locations[0] || null;
 }
 
+function initializeWorld() {
+  const worldView = document.getElementById("world");
+  if (worldView && !worldView.classList.contains("active")) {
+    showView("world");
+  }
+
+  if (window.ayeewaVirtualWorld && typeof window.ayeewaVirtualWorld.initialize === "function") {
+    requestAnimationFrame(() => {
+      const host = document.getElementById("world-canvas");
+      const isVisible = !!host && host.clientHeight > 0 && host.offsetParent !== null;
+      if (!isVisible) {
+        if (worldError) {
+          worldError.hidden = false;
+          worldError.textContent = "Unable to initialise the 3D scene because the world container is hidden or has zero height.";
+        }
+        return;
+      }
+      window.ayeewaVirtualWorld.initialize();
+    });
+  }
+}
+
 function showView(targetId) {
   views.forEach((view) => {
     view.classList.toggle("active", view.id === targetId);
@@ -74,6 +96,24 @@ function showView(targetId) {
   navItems.forEach((button) => {
     button.classList.toggle("active", button.dataset.target === targetId);
   });
+
+  if (targetId === "world") {
+    requestAnimationFrame(() => {
+      const host = document.getElementById("world-canvas");
+      if (!host) return;
+      if (host.clientHeight <= 0) {
+        if (worldLoading) worldLoading.hidden = false;
+        if (worldError) {
+          worldError.hidden = false;
+          worldError.textContent = "The world view is visible, but the 3D canvas has no height. Reload the page or resize the viewport.";
+        }
+      }
+
+      if (window.ayeewaVirtualWorld && typeof window.ayeewaVirtualWorld.initialize === "function") {
+        window.ayeewaVirtualWorld.initialize();
+      }
+    });
+  }
 
   if (window.innerWidth <= 480 && menu) {
     menu.classList.remove("open");
@@ -342,9 +382,7 @@ window.showWorldFocus = function (key) {
 
 enterWorldButton?.addEventListener("click", () => {
   showView("world");
-  if (window.ayeewaVirtualWorld && typeof window.ayeewaVirtualWorld.focusLocation === "function") {
-    window.ayeewaVirtualWorld.focusLocation(appState.selectedKey, { syncMap: false });
-  }
+  initializeWorld();
   showToast("Virtual world ready for exploration.");
 });
 
@@ -354,7 +392,7 @@ if (window.L) {
 
 if (worldLocationName && worldLocationDescription) {
   worldLocationName.textContent = "Victoria Island";
-  worldLocationDescription.textContent = "City-edge innovation district with commerce, nightlife and a strong creative pulse. • Lagos, Nigeria �� Shared geographic coordinates.";
+  worldLocationDescription.textContent = "City-edge innovation district with commerce, nightlife and a strong creative pulse. • Lagos, Nigeria • Shared geographic coordinates.";
 }
 
 if (worldStatusPill) {
@@ -370,16 +408,20 @@ if (!window.L && worldError) {
   worldError.textContent = "Map resources are unavailable, but the 3D scene can still render in this browser.";
 }
 
-function initializeWorld() {
-  if (window.ayeewaVirtualWorld && typeof window.ayeewaVirtualWorld.initialize === "function") {
-    window.ayeewaVirtualWorld.initialize();
-  }
-}
-
 if (document.readyState === "complete") {
-  initializeWorld();
+  requestAnimationFrame(() => {
+    if (document.getElementById("world")?.classList.contains("active")) {
+      initializeWorld();
+    }
+  });
 } else {
-  window.addEventListener("load", initializeWorld, { once: true });
+  window.addEventListener("load", () => {
+    requestAnimationFrame(() => {
+      if (document.getElementById("world")?.classList.contains("active")) {
+        initializeWorld();
+      }
+    });
+  }, { once: true });
 }
 
 console.info("AYEWA.AI ready with map and virtual world state.");
