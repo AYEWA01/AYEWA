@@ -14,6 +14,12 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -139,26 +145,21 @@
           <div class="section-header">
             <div>
               <p class="eyebrow">Map View</p>
-              <h3 id="map-title">Explore Lagos on a prepared location layer.</h3>
+              <h3 id="map-title">Explore Lagos on an interactive OpenStreetMap layer.</h3>
             </div>
           </div>
 
           <div class="map-panel">
-            <div class="map-surface" aria-label="Mock geographic map preview">
-              <div class="map-marker marker-one">A</div>
-              <div class="map-marker marker-two">B</div>
-              <div class="map-marker marker-three">C</div>
-              <div class="map-route"></div>
-            </div>
+            <div id="map-canvas" class="map-canvas" aria-label="Lagos city map"></div>
             <div class="map-info">
               <p class="status-label">Integration status</p>
-              <strong id="map-status">Map integration: not connected</strong>
+              <strong id="map-status">Map integration: loading OpenStreetMap…</strong>
               <p>
-                This is a static prototype layer. Google Maps, location services, and
-                geospatial APIs are not yet active.
+                This map uses OpenStreetMap and Leaflet, so it works without a Google Maps API key or paid service.
+                <span class="map-attribution">© OpenStreetMap contributors</span>
               </p>
               <div class="inline-actions">
-                <button class="primary-btn small" type="button" id="demo-map-button">Load demo map</button>
+                <button class="primary-btn small" type="button" id="demo-map-button">Load map</button>
                 <button class="secondary-btn small" type="button" id="map-warning-button">Show note</button>
               </div>
             </div>
@@ -181,7 +182,7 @@
                 A front-end prototype for a future social city with digital land, events,
                 community spaces, and immersive public experiences.
               </p>
-              <p class="mini-note">3D world: future development</p>
+              <p class="mini-note">3D world: future development • no live engine configured</p>
               <button class="primary-btn" type="button" id="enter-world-button">Enter world</button>
             </div>
             <div class="loading-box" id="world-loading" aria-live="polite" hidden>
@@ -315,6 +316,11 @@
       </main>
     </div>
 
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
     <script src="app.js"></script>
   </body>
 </html>

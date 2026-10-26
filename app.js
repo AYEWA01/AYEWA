@@ -4,6 +4,9 @@ const toggleButton = document.querySelector(".nav-toggle");
 const mapStatus = document.getElementById("map-status");
 const menu = document.querySelector(".mobile-nav");
 
+let map = null;
+let loadingWorldTimer = null;
+
 function showView(targetId) {
   views.forEach((view) => {
     view.classList.toggle("active", view.id === targetId);
@@ -14,7 +17,17 @@ function showView(targetId) {
   });
 
   if (window.innerWidth <= 480) {
-    menu.classList.remove("open");
+    menu?.classList.remove("open");
+  }
+
+  if (targetId === "map") {
+    setTimeout(() => {
+      if (map) {
+        map.invalidateSize();
+      } else {
+        initializeMap();
+      }
+    }, 150);
   }
 }
 
@@ -31,8 +44,8 @@ document.querySelectorAll("[data-open]").forEach((button) => {
 });
 
 toggleButton?.addEventListener("click", () => {
-  menu.classList.toggle("open");
-  if (menu.classList.contains("open")) {
+  menu?.classList.toggle("open");
+  if (menu?.classList.contains("open")) {
     menu.style.display = "flex";
   } else {
     menu.style.display = "none";
@@ -45,17 +58,91 @@ if (window.innerWidth > 480) {
   menu.style.display = "none";
 }
 
+function initializeMap() {
+  const mapElement = document.getElementById("map-canvas");
+  if (!mapElement) return;
+  if (map) return;
+
+  if (typeof window.L === "undefined") {
+    mapStatus.textContent = "Map integration: Leaflet failed to load";
+    console.error("Leaflet is unavailable.");
+    return;
+  }
+
+  try {
+    map = window.L.map("map-canvas", {
+      zoomControl: true,
+      scrollWheelZoom: true,
+      attributionControl: true,
+      dragging: true,
+      tap: true,
+    });
+
+    map.setView([6.5244, 3.3792], 11);
+
+    window.L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: "&copy; OpenStreetMap contributors",
+      crossOrigin: true,
+    }).addTo(map);
+
+    const locations = [
+      {
+        name: "Victoria Island",
+        coords: [6.4281, 3.4219],
+        description: "Creative hubs, nightlife, and waterfront lifestyle.",
+      },
+      {
+        name: "Yaba",
+        coords: [6.5100, 3.3697],
+        description: "Startup energy, digital learning, and creator communities.",
+      },
+      {
+        name: "Lekki",
+        coords: [6.4392, 3.4761],
+        description: "Beachfront culture, social districts, and future city experiences.",
+      },
+      {
+        name: "Ikeja",
+        coords: [6.6018, 3.3515],
+        description: "Civic and commercial activity in central Lagos.",
+      },
+    ];
+
+    locations.forEach((item) => {
+      const marker = window.L.marker(item.coords).addTo(map);
+      marker.bindPopup(`<strong>${item.name}</strong><br>${item.description}`);
+    });
+
+    map.whenReady(() => {
+      if (mapStatus) {
+        mapStatus.textContent = "Map integration: live OpenStreetMap layer active";
+      }
+      setTimeout(() => map.invalidateSize(), 200);
+    });
+  } catch (error) {
+    mapStatus.textContent = "Map integration: failed to load — please refresh or check browser support";
+    console.error("Map initialization failed:", error);
+  }
+}
+
 const demoMapButton = document.getElementById("demo-map-button");
 const mapWarningButton = document.getElementById("map-warning-button");
 
 demoMapButton?.addEventListener("click", () => {
-  mapStatus.textContent = "Map integration: demo layer active";
-  showToast("Demo map loaded. Maps API integration is still pending.");
+  initializeMap();
+  if (map) {
+    mapStatus.textContent = "Map integration: live OpenStreetMap layer active";
+    showToast("Lagos map loaded using OpenStreetMap.");
+  } else {
+    mapStatus.textContent = "Map integration: failed to load — please refresh or check browser support";
+    showToast("Map failed to load. Please check the browser console and network access.");
+  }
 });
 
 mapWarningButton?.addEventListener("click", () => {
-  mapStatus.textContent = "Map integration: not connected";
-  showToast("Google Maps is intentionally not configured in this prototype.");
+  mapStatus.textContent = "Map integration: OpenStreetMap demo layer is active";
+  showToast("OpenStreetMap is being used in this prototype, so no Google key is required.");
 });
 
 function showToast(message) {
@@ -82,16 +169,30 @@ function showToast(message) {
 const worldLoading = document.getElementById("world-loading");
 const enterWorldButton = document.getElementById("enter-world-button");
 
+function resetWorldButton() {
+  if (!enterWorldButton) return;
+  enterWorldButton.disabled = false;
+  enterWorldButton.textContent = "Enter world";
+}
+
 enterWorldButton?.addEventListener("click", () => {
-  worldLoading.hidden = false;
+  if (worldLoading) {
+    worldLoading.hidden = false;
+  }
+
   enterWorldButton.disabled = true;
   enterWorldButton.textContent = "Loading...";
 
-  setTimeout(() => {
-    worldLoading.hidden = true;
-    enterWorldButton.disabled = false;
-    enterWorldButton.textContent = "Enter world";
-    showToast("World session ready. 3D engine integration is still pending.");
+  if (loadingWorldTimer) {
+    clearTimeout(loadingWorldTimer);
+  }
+
+  loadingWorldTimer = setTimeout(() => {
+    if (worldLoading) {
+      worldLoading.hidden = true;
+    }
+    resetWorldButton();
+    showToast("Virtual world preview ready. 3D engine and multiplayer services are future integrations.");
   }, 1400);
 });
 
@@ -175,3 +276,17 @@ avatarButton?.addEventListener("click", () => {
     tag.textContent = style.charAt(0).toUpperCase() + style.slice(1);
   }
 });
+
+window.addEventListener("resize", () => {
+  if (map) {
+    setTimeout(() => map.invalidateSize(), 120);
+  }
+});
+
+if (mapStatus) {
+  mapStatus.textContent = "Map integration: ready to load";
+}
+
+setTimeout(() => {
+  initializeMap();
+}, 150);
